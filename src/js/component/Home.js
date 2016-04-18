@@ -1,26 +1,27 @@
 'use strict';
 
 import React, {Component} from 'react';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import Popover from 'material-ui/lib/popover/popover';
-import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
-import RaisedButton from 'material-ui/lib/raised-button';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as authActionCreators from "../actions/auth";
 import Header from './Header';
 import Login from './Login';
-
-const styles = {
-  popover: {
-    padding: 20,
-  },
-};
+import Signup from './Signup';
 
 class Home extends Component {
 
-    componentWillMount(){
-        injectTapEventPlugin();
-    }
-
     render() {
+
+        let { loginBox } = this.props;
+        let loginSignupBox = null;
+
+        if (loginBox) {
+            loginSignupBox = <Login />;
+        }
+        else{
+            loginSignupBox = <Signup />;
+        }
+
         return (
             <div>
 
@@ -28,11 +29,19 @@ class Home extends Component {
 
                 {this.props.children}
 
-                <Login />
+                {loginSignupBox}
 
             </div>
         );
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+    loginBox: state.app.loginBox
+});
+
+const mapDispatchToProps = (dispatch) => ({
+   authActions: bindActionCreators(authActionCreators, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

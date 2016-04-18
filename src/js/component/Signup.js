@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as authActionCreators from '../actions/auth';
+import * as signupActionCreators from '../actions/signup';
 import * as appActionCreators from '../actions/app';
 
 class Login extends Component{
@@ -18,62 +18,66 @@ class Login extends Component{
 
         super(props);
         this.state = {
-            username: '',
-            password: ''
+            firstName: '',
+            lastName: ''
         };
 
     }
 
     authenticate(e) {
 
-        if (this.state.username == "" || this.state.password == "") return;
+        if (this.state.firstName == "" || this.state.lastName == "") return;
         e.preventDefault();
         this.props.authActions.authenticateUser(this.state.username, this.state.password);
 
     }
 
-    onUsernameChange(e) {
+    onFirstNameChange(e) {
 
-        this.setState({username: e.target.value});
-
-    }
-
-    onPasswordChange(e) {
-
-        this.setState({password: e.target.value});
+        this.setState({firstName: e.target.value});
 
     }
 
-    openSignUp(){
+    onLastNameChange(e) {
 
-        this.props.appActions.showHideLoginBox(false);
+        this.setState({lastName: e.target.value});
 
     }
+
+    onSignUp(){
+
+        let signupData = {
+            user:{
+                first_name: this.state.firstName,
+                last_name: this.state.lastName
+            }
+        }
+        this.props.signupActions.signUpUser(signupData);
+        //this.props.appActions.showHideLoginBox(true);
+
+    }
+
 
     render(){
 
         return(
             <Card className="text-center" >
                 <CardHeader
-                  title="LOGIN"
+                  title="SIGNUP"
                   actAsExpander={false}
                   showExpandableButton={false}/>
                 <CardText expandable={false}>
-                    <TextField  hintText="Enter Username"
-                                floatingLabelText="Username"
-                                onChange={this.onUsernameChange.bind(this)} /><br />
-                    <TextField  hintText="Enter Password"
-                                floatingLabelText="Password"
-                                type="password"
-                                onChange={this.onPasswordChange.bind(this)} />
+                    <TextField  hintText="Enter First Name"
+                                floatingLabelText="First Name"
+                                onChange={this.onFirstNameChange.bind(this)} /><br />
+                    <TextField  hintText="Enter Last Name"
+                                floatingLabelText="Last Name"
+                                onChange={this.onLastNameChange.bind(this)} />
                     <div>
-                        <RaisedButton   label="Login"
-                                        secondary={true}
-                                        className="login-btn"/>
                         <RaisedButton   label="Signup"
                                         primary={true}
-                                        className="login-btn left-buffer"
-                                        onClick={this.openSignUp.bind(this)}/>
+                                        className="login-btn"
+                                        onClick={this.onSignUp.bind(this)}/>
                     </div>
                 </CardText>
             </Card>
@@ -83,11 +87,11 @@ class Login extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    loginBox: state.app.loginBox
+    loginBox: state.auth.loginBox
 });
 
 const mapDispatchToProps = (dispatch) => ({
-   authActions: bindActionCreators(authActionCreators, dispatch),
+   signupActions: bindActionCreators(signupActionCreators, dispatch),
    appActions: bindActionCreators(appActionCreators, dispatch),
 });
 
