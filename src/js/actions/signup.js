@@ -1,9 +1,8 @@
 import constants from '../constants';
-import { push } from 'redux-router';
 import { post } from "./common";
 import { parseJSON } from "../utils";
 
-let {SIGNUP_USER_REQUEST, SIGNUP_USER_SUCCESS} = constants;
+let {SIGNUP_USER_REQUEST, SIGNUP_USER_SUCCESS, SHOW_HIDE_LOGIN, SIGNUP_USER_FAILURE} = constants;
 
 export function signUpUser(signupData){
 
@@ -15,7 +14,13 @@ export function signUpUser(signupData){
 
         post(endPointURL, signupData)
             .then((response)=> {
+
                 dispatch({type: SIGNUP_USER_SUCCESS});
+                dispatch({
+                    type: SHOW_HIDE_LOGIN,
+                    payload: true
+                });
+
             })
             .catch(error=> {
                 parseJSON(error).then((errorObj)=> {

@@ -31,29 +31,25 @@ export function get(nodeURL) {
 
 export function post(nodeURL, data) {
 
-    // let accessToken = localStorage.getItem('access_token');
-    // let tokenType = 'Bearer ';
+    return fetch(config.BASE_URL + nodeURL, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
 
-    //if (tokenType !== null || accessToken !== null) {
-        return fetch(config.BASE_URL + nodeURL, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(data)
-
-        }).then(checkHttpStatus)
-            .then((response) => {
-                return response;
-            })
-            .then(result => {
-                return result;
-            })
-            .catch(error => {
-                throw error;
-            })
-    //}
+    })
+        .then(checkHttpStatus)
+        .then((response) => {
+            return parseJSON(response);
+        })
+        .then(result => {
+            return result;
+        })
+        .catch(error => {
+            throw error;
+        })
 
 }
 

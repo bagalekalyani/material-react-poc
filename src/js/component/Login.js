@@ -18,29 +18,48 @@ class Login extends Component{
 
         super(props);
         this.state = {
-            username: '',
-            password: ''
+            username: null,
+            password: null,
+            usernameError: null,
+            passwordError: null
         };
 
     }
 
-    authenticate(e) {
+    login(e) {
 
-        if (this.state.username == "" || this.state.password == "") return;
-        e.preventDefault();
-        this.props.authActions.authenticateUser(this.state.username, this.state.password);
+        if (this.state.username && this.state.password){
+            let loginData = {
+                user: {
+                    first_name: this.state.username,
+                    password: this.state.password
+                }
+            }
+            this.props.authActions.authenticateUser(loginData);
+        }
+
+        if(!this.state.username){
+            this.setState({usernameError: 'Username is mandatory'});
+        }
+
+        if(!this.state.password){
+            this.setState({passwordError: 'Password is mandatory'});
+        }
+
 
     }
 
     onUsernameChange(e) {
 
         this.setState({username: e.target.value});
+        this.setState({usernameError: null});
 
     }
 
     onPasswordChange(e) {
 
         this.setState({password: e.target.value});
+        this.setState({passwordError: null});
 
     }
 
@@ -61,15 +80,18 @@ class Login extends Component{
                 <CardText expandable={false}>
                     <TextField  hintText="Enter Username"
                                 floatingLabelText="Username"
+                                errorText={this.state.usernameError}
                                 onChange={this.onUsernameChange.bind(this)} /><br />
                     <TextField  hintText="Enter Password"
                                 floatingLabelText="Password"
                                 type="password"
+                                errorText={this.state.passwordError}
                                 onChange={this.onPasswordChange.bind(this)} />
                     <div>
                         <RaisedButton   label="Login"
                                         secondary={true}
-                                        className="login-btn"/>
+                                        className="login-btn"
+                                        onClick={this.login.bind(this)}/>
                         <RaisedButton   label="Signup"
                                         primary={true}
                                         className="login-btn left-buffer"

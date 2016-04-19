@@ -18,42 +18,97 @@ class Login extends Component{
 
         super(props);
         this.state = {
-            firstName: '',
-            lastName: ''
+            firstName: null,
+            lastName: null,
+            email: null,
+            address: null,
+            phoneNumber: null,
+            firstNameError: null,
+            lastNameError: null,
+            emailError: null,
+            phoneNumberError: null,
+            addressError: null
         };
 
     }
 
-    authenticate(e) {
-
-        if (this.state.firstName == "" || this.state.lastName == "") return;
-        e.preventDefault();
-        this.props.authActions.authenticateUser(this.state.username, this.state.password);
-
-    }
 
     onFirstNameChange(e) {
 
         this.setState({firstName: e.target.value});
+        this.setState({firstNameError: null});
 
     }
 
     onLastNameChange(e) {
 
         this.setState({lastName: e.target.value});
+        this.setState({lastNameError: null});
 
     }
 
+    onEmailChange(e){
+
+        this.setState({email: e.target.value});
+        this.setState({emailError: null});
+
+    }
+
+    onAddressChange(e){
+
+        this.setState({address: e.target.value});
+        this.setState({addressError: null});
+
+    }
+
+    onPhoneNumberChange(e){
+
+        this.setState({phoneNumber: e.target.value});
+        this.setState({phoneNumberError: null});
+
+    }
+
+    openSignUp(){
+
+        this.props.appActions.showHideLoginBox(true);
+
+    }
+
+
     onSignUp(){
+
+        if(!this.state.firstName){
+            this.setState({firstNameError: 'First name is mandatory'});
+        }
+
+        if(!this.state.lastName){
+            this.setState({lastNameError: 'Last name is mandatory'});
+        }
+
+        if(!this.state.email){
+            this.setState({emailError: 'Email Address is mandatory'});
+        }
+
+        if(!this.state.address){
+            this.setState({addressError: 'Address is mandatory'});
+        }
+
+        if(!this.state.phoneNumber){
+            this.setState({phoneNumberError: 'Phone Number is mandatory'});
+        }
 
         let signupData = {
             user:{
                 first_name: this.state.firstName,
-                last_name: this.state.lastName
+                last_name: this.state.lastName,
+                email: this.state.email,
+                address: this.state.address,
+                phone_number: this.state.phoneNumber
             }
         }
-        this.props.signupActions.signUpUser(signupData);
-        //this.props.appActions.showHideLoginBox(true);
+        if(this.state.firstName && this.state.lastName && this.state.email && this.state.address && this.state.phoneNumber){
+            this.props.signupActions.signUpUser(signupData);
+        }
 
     }
 
@@ -67,16 +122,34 @@ class Login extends Component{
                   actAsExpander={false}
                   showExpandableButton={false}/>
                 <CardText expandable={false}>
-                    <TextField  hintText="Enter First Name"
-                                floatingLabelText="First Name"
+                    <TextField  hintText="Enter First Name*"
+                                floatingLabelText="First Name*"
+                                errorText={this.state.firstNameError}
                                 onChange={this.onFirstNameChange.bind(this)} /><br />
-                    <TextField  hintText="Enter Last Name"
-                                floatingLabelText="Last Name"
-                                onChange={this.onLastNameChange.bind(this)} />
+                    <TextField  hintText="Enter Last Name*"
+                                floatingLabelText="Last Name*"
+                                errorText={this.state.lastNameError}
+                                onChange={this.onLastNameChange.bind(this)} /><br />
+                    <TextField  hintText="Enter Email*"
+                                floatingLabelText="Email Address*"
+                                errorText={this.state.emailError}
+                                onChange={this.onEmailChange.bind(this)} /><br />
+                    <TextField  hintText="Enter Phone Number*"
+                                floatingLabelText="Phone Number*"
+                                errorText={this.state.phoneNumberError}
+                                onChange={this.onPhoneNumberChange.bind(this)} /><br />
+                    <TextField  hintText="Enter Address*"
+                                floatingLabelText="Address*"
+                                errorText={this.state.addressError}
+                                onChange={this.onAddressChange.bind(this)} /><br />
+
                     <div>
-                        <RaisedButton   label="Signup"
-                                        primary={true}
+                        <RaisedButton   label="Back"
                                         className="login-btn"
+                                        onClick={this.openSignUp.bind(this)}/>
+                        <RaisedButton   label="Signup"
+                                        secondary={true}
+                                        className="login-btn left-buffer"
                                         onClick={this.onSignUp.bind(this)}/>
                     </div>
                 </CardText>
