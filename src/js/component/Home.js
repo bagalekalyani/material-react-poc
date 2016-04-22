@@ -7,6 +7,8 @@ import * as authActionCreators from "../actions/auth";
 import Header from './Header';
 import Login from './Login';
 import Signup from './Signup';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 class Home extends Component {
 
