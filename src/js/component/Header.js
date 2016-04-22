@@ -20,35 +20,13 @@ class Header extends Component{
         this.state = {open: false};
     }
 
-    test(){
-        alert("uhf")
-        // this.setState({open: !this.state.open});
-    }
-
-    // <IconMenu
-    //     iconButtonElement={
-    //         <IconButton><MoreVertIcon /></IconButton>
-    //     }
-    //     targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    //     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-    //     >
-    //     <MenuItem primaryText="Refresh" />
-    //     <MenuItem primaryText="Help" />
-    //     <MenuItem primaryText="Sign out" />
-    // </IconMenu>
-    // <LeftNav width={200} open={this.state.open}>
-    //   <MenuItem>Menu Item</MenuItem>
-    //   <MenuItem>Menu Item 2</MenuItem>
-    // </LeftNav>
-
     render(){
 
         return(
-            
+
             <div>
                 <AppBar
-                    title="Material-React-Rails-App"
-                    onTitleTouchTap={this.test.bind(this)}>
+                    title="Material-React-Rails-App">
                 </AppBar>
             </div>
 
