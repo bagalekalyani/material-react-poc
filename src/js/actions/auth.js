@@ -24,6 +24,7 @@ export function authenticateUser(loginData){
                         first_name: response.first_name
                     }
                 });
+
                 dispatch(push("dashboard"));
 
             })
