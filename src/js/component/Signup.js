@@ -23,11 +23,12 @@ class Login extends Component{
             email: null,
             address: null,
             phoneNumber: null,
+            password: null,
+            confirmPassword: null,
             firstNameError: null,
-            lastNameError: null,
             emailError: null,
-            phoneNumberError: null,
-            addressError: null
+            passwordError: null,
+            confirmPasswordError: null
         };
 
     }
@@ -43,7 +44,6 @@ class Login extends Component{
     onLastNameChange(e) {
 
         this.setState({lastName: e.target.value});
-        this.setState({lastNameError: null});
 
     }
 
@@ -57,14 +57,26 @@ class Login extends Component{
     onAddressChange(e){
 
         this.setState({address: e.target.value});
-        this.setState({addressError: null});
 
     }
 
     onPhoneNumberChange(e){
 
         this.setState({phoneNumber: e.target.value});
-        this.setState({phoneNumberError: null});
+
+    }
+
+    onPasswordChange(e){
+
+        this.setState({password: e.target.value});
+        this.setState({passwordError: null});
+
+    }
+
+    onConfirmPasswordChange(e){
+
+        this.setState({confirmPassword: e.target.value});
+        this.setState({confirmPasswordError: null});
 
     }
 
@@ -74,6 +86,11 @@ class Login extends Component{
 
     }
 
+    componentDidMount() {
+
+        this.props.signupActions.clearErrorMessage();
+
+    }
 
     onSignUp(){
 
@@ -81,20 +98,16 @@ class Login extends Component{
             this.setState({firstNameError: 'First name is mandatory'});
         }
 
-        if(!this.state.lastName){
-            this.setState({lastNameError: 'Last name is mandatory'});
-        }
-
         if(!this.state.email){
-            this.setState({emailError: 'Email Address is mandatory'});
+            this.setState({emailError: 'Email address is mandatory'});
         }
 
-        if(!this.state.address){
-            this.setState({addressError: 'Address is mandatory'});
+        if(!this.state.password){
+            this.setState({passwordError: 'Password is mandatory'});
         }
 
-        if(!this.state.phoneNumber){
-            this.setState({phoneNumberError: 'Phone Number is mandatory'});
+        if(!this.state.confirmPassword){
+            this.setState({confirmPasswordError: 'Confirm password is mandatory'});
         }
 
         let signupData = {
@@ -103,32 +116,46 @@ class Login extends Component{
                 last_name: this.state.lastName,
                 email: this.state.email,
                 address: this.state.address,
-                phone_number: this.state.phoneNumber
+                phone_number: this.state.phoneNumber,
+                password_hash: this.state.password
             }
         }
-        if(this.state.firstName && this.state.lastName && this.state.email && this.state.address && this.state.phoneNumber){
+
+        let passwordsMatch = true;
+
+        if(this.state.password != this.state.confirmPassword){
+            passwordsMatch = false;
+        }
+
+        if(!passwordsMatch){
+            this.setState({confirmPasswordError: 'Password and confirm password should match'});
+        }
+
+        if(this.state.firstName && this.state.email && this.state.password && this.state.confirmPassword && passwordsMatch){
             this.props.signupActions.signUpUser(signupData);
         }
 
     }
 
-
     render(){
+
+        let errorMessageClass = this.props.statusText ? ' show ' : ' hide';
 
         return(
             <Card className="text-center" >
                 <CardHeader
-                  title="SIGNUP"
-                  actAsExpander={false}
-                  showExpandableButton={false}/>
+                    title="SIGNUP"
+                    subtitle="Material-React-Rails-App"/>
                 <CardText expandable={false}>
+                    <div className={"red-text" + errorMessageClass}>
+                        {this.props.statusText}
+                    </div>
                     <TextField  hintText="Enter First Name*"
                                 floatingLabelText="First Name*"
                                 errorText={this.state.firstNameError}
                                 onChange={this.onFirstNameChange.bind(this)} /><br />
                     <TextField  hintText="Enter Last Name*"
                                 floatingLabelText="Last Name*"
-                                errorText={this.state.lastNameError}
                                 onChange={this.onLastNameChange.bind(this)} /><br />
                     <TextField  hintText="Enter Email*"
                                 floatingLabelText="Email Address*"
@@ -136,13 +163,20 @@ class Login extends Component{
                                 onChange={this.onEmailChange.bind(this)} /><br />
                     <TextField  hintText="Enter Phone Number*"
                                 floatingLabelText="Phone Number*"
-                                errorText={this.state.phoneNumberError}
                                 onChange={this.onPhoneNumberChange.bind(this)} /><br />
                     <TextField  hintText="Enter Address*"
                                 floatingLabelText="Address*"
-                                errorText={this.state.addressError}
                                 onChange={this.onAddressChange.bind(this)} /><br />
-
+                    <TextField  type="password"
+                                hintText="Password*"
+                                floatingLabelText="Password*"
+                                errorText={this.state.passwordError}
+                                onChange={this.onPasswordChange.bind(this)} /><br />
+                    <TextField  type="password"
+                                hintText="Confirm Password*"
+                                floatingLabelText="Confirm Password*"
+                                errorText={this.state.confirmPasswordError}
+                                onChange={this.onConfirmPasswordChange.bind(this)} /><br />
                     <div>
                         <RaisedButton   label="Back"
                                         className="login-btn"
@@ -160,7 +194,8 @@ class Login extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    loginBox: state.auth.loginBox
+    loginBox: state.auth.loginBox,
+    statusText: state.signup.statusText
 });
 
 const mapDispatchToProps = (dispatch) => ({
