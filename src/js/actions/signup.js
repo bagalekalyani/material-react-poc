@@ -2,7 +2,7 @@ import constants from '../constants';
 import { post } from "./common";
 import { parseJSON } from "../utils";
 
-let {SIGNUP_USER_REQUEST, SIGNUP_USER_SUCCESS, SHOW_HIDE_LOGIN, SIGNUP_USER_FAILURE} = constants;
+let {SIGNUP_USER_REQUEST, SIGNUP_USER_SUCCESS, SHOW_HIDE_LOGIN, SIGNUP_USER_FAILURE, CLEAN_ERROR_MESSAGE} = constants;
 
 export function signUpUser(signupData){
 
@@ -15,7 +15,9 @@ export function signUpUser(signupData){
         post(endPointURL, signupData)
             .then((response)=> {
 
-                dispatch({type: SIGNUP_USER_SUCCESS});
+                dispatch({
+                    type: SIGNUP_USER_SUCCESS
+                });
                 dispatch({
                     type: SHOW_HIDE_LOGIN,
                     payload: true
@@ -31,6 +33,15 @@ export function signUpUser(signupData){
                 })
             })
 
+    }
+
+}
+
+export function clearErrorMessage() {
+
+    return {
+        type: CLEAN_ERROR_MESSAGE,
+        payload: null
     }
 
 }

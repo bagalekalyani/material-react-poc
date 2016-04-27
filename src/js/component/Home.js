@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as authActionCreators from "../actions/auth";
-import Header from './Header';
 import Login from './Login';
 import Signup from './Signup';
 
@@ -24,8 +23,6 @@ class Home extends Component {
 
         return (
             <div>
-
-                <Header />
 
                 {this.props.children}
 

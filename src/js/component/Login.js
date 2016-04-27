@@ -31,8 +31,8 @@ class Login extends Component{
         if (this.state.username && this.state.password){
             let loginData = {
                 user: {
-                    first_name: this.state.username,
-                    password: this.state.password
+                    email: this.state.username,
+                    password_hash: this.state.password
                 }
             }
             this.props.authActions.authenticateUser(loginData);
@@ -69,15 +69,25 @@ class Login extends Component{
 
     }
 
+    componentDidMount() {
+
+        this.props.authActions.clearErrorMessage();
+
+    }
+
     render(){
+
+        let errorMessageClass = this.props.statusText ? ' show ' : ' hide';
 
         return(
             <Card className="text-center" >
                 <CardHeader
-                  title="LOGIN"
-                  actAsExpander={false}
-                  showExpandableButton={false}/>
+                    title="LOGIN"
+                    subtitle="Material-React-Rails-App"/>
                 <CardText expandable={false}>
+                    <div className={"red-text" + errorMessageClass}>
+                        {this.props.statusText}
+                    </div>
                     <TextField  hintText="Enter Username"
                                 floatingLabelText="Username"
                                 errorText={this.state.usernameError}
@@ -105,7 +115,8 @@ class Login extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    loginBox: state.app.loginBox
+    loginBox: state.app.loginBox,
+    statusText: state.auth.statusText
 });
 
 const mapDispatchToProps = (dispatch) => ({
