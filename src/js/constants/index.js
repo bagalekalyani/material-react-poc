@@ -7,5 +7,6 @@ export default createConstants(
     'SIGNUP_USER_SUCCESS',
     'SIGNUP_USER_FAILURE',
     'LOGIN_USER_FAILURE',
-    'LOGIN_USER_SUCCESS'
+    'LOGIN_USER_SUCCESS',
+    'CLEAN_ERROR_MESSAGE'
 );

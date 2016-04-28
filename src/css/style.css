@@ -42,4 +42,8 @@
 
 .header-light-green{
     background-color: rgb(108,201,182);
+ }   
+
+.red-text{
+    color: #f44336;
 }

@@ -1,6 +1,6 @@
 import {checkHttpStatus, parseJSON} from "../../utils";
 import config from "../../config";
-
+import {push} from "redux-router";
 
 export function get(nodeURL) {
 
@@ -24,7 +24,7 @@ export function get(nodeURL) {
                 throw error;
             })
     } else {
-        dispatch(pushState(null, '/login'));
+        dispatch(push('/'));
     }
 
 }
