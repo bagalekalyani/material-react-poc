@@ -26,14 +26,8 @@
     margin-top: 40px;
 }
 
-.width-30 {
-    width: 25%;
-}
-
 .thumb{
     margin: 20px;
-    width: 328px;
-    display: inline-block;
 }
 
 .header-blue{
@@ -42,7 +36,7 @@
 
 .header-light-green{
     background-color: rgb(108,201,182);
- }   
+ }
 
 .red-text{
     color: #f44336;
